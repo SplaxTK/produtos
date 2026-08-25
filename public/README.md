@@ -1,4 +1,4 @@
 ```bash
 composer require slim/slim
-composer require slim/prs7
+composer require slim/psr7
 ```
