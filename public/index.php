@@ -352,4 +352,20 @@ $response->getBody()->write(json_encode($novoProduto));
 return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
 });
 
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+$app->get('/produtos',function ($request, $response, $args) use (&$produtos) {
+    $queryParams = $request->getQueryParams();
+    $nome = $queryParams ['nome '] ?: null;
+
+    if($nome) {
+ $filtrados = array_filter($produtos,fn($item) => str_contains(mb_strtolower($item['nome']), mb_strtolower($nome)));
+    $response->getBody()->write(json_encode($filtrados));
+}else{
+    $response->getBody()->write(json_encode($produtos));
+
+     return$response->withHeader('Content-Type','application/json')->withStatus(200);
+}
+});
+
 $app->run();
