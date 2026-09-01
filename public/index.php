@@ -318,4 +318,38 @@ $app->get('/animes/curiosidades/xml', function ($request, $response) {
         ->withStatus(200);
 });
 
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+//          Produtos
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+$app->addBodyParsingMiddleware();
+$app->addRoutingMiddleware();
+$app->addErrorMiddleware(true, true, true);
+$produtos = [
+['id' => 1, 'nome' => 'Teclado'],
+['id' => 2, 'nome' => 'Mouse'],
+['id' => 3, 'nome' => 'Monitor'],
+['id' => 4, 'nome' => 'Notebook'],
+];
+
+$app->get('/produtos/{id}', function ($request, $response, $args) use (&$produtos) {
+$produto = current(array_filter($produtos, fn ($p) => $p['id'] === (int) $args['id'])) ?: null;
+if (!$produto) {
+$response->getBody()->write(json_encode(['erro' => 'Produto não encontrado']));
+return $response->withHeader('Content-Type', 'application/json')->withStatus(404);
+}
+$response->getBody()->write(json_encode($produto));
+return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+});
+
+// Adicionar produto
+
+$app->post('/produtos', function ($request, $response) use (&$produtos) {
+$dados = $request->getParsedBody();
+$novoProduto = ['id' => count($produtos) + 1, 'nome' => $dados['nome']];
+$produtos[] = $novoProduto;
+$response->getBody()->write(json_encode($novoProduto));
+return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
+});
+
 $app->run();
