@@ -108,19 +108,19 @@ A API foi criada para demonstrar rotas simples em PHP com Slim, retornando mensa
 Prints de testes:
 
 /status
-![alt text](image-2.png)
+![alt text](img/image-2.png)
 
 GET /produtos/1
-![alt text](image.png)
+![alt text](img/image.png)
 
 GET /gato
-![alt text](image-1.png)
+![alt text](img/image-1.png)
 
 POST /produtos
-![alt text](image-3.png)
+![alt text](img/image-3.png)
 
 PUT /produtos
-![alt text](image-4.png)
+![alt text](img/image-4.png)
 
 DELETE /produtos
-![alt text](image-5.png)
+![alt text](img/image-5.png)
