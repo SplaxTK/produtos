@@ -342,7 +342,7 @@ $response->getBody()->write(json_encode($produto));
 return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
-// Adicionar produto
+// POST
 
 $app->post('/produtos', function ($request, $response) use (&$produtos) {
 $dados = $request->getParsedBody();
@@ -352,7 +352,7 @@ $response->getBody()->write(json_encode($novoProduto));
 return $response->withHeader('Content-Type', 'application/json')->withStatus(201);
 });
 
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// GET
 
 $app->get('/produtos',function ($request, $response, $args) use (&$produtos) {
     $queryParams = $request->getQueryParams();
@@ -366,6 +366,25 @@ $app->get('/produtos',function ($request, $response, $args) use (&$produtos) {
 
      return$response->withHeader('Content-Type','application/json')->withStatus(200);
 }
+});
+
+//PUT
+$app->put('/produtos/{id}', function ($request, $response, $args) use (&$produtos) {
+$dados = $request->getParsedBody();
+foreach ($produtos as &$produto) {
+if ($produto['id'] === (int) $args['id']) {
+$produto['nome'] = $dados['nome'];
+$response->getBody()->write(json_encode($produto));
+return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+}
+}
+return $response->withStatus(404);
+});
+
+//DELETE
+$app->delete('/produtos/{id}', function ($request, $response, $args) use (&$produtos) {
+$produtos = array_values(array_filter($produtos, fn ($p) => $p['id'] !== (int) $args['id']));
+return $response->withStatus(204);
 });
 
 $app->run();
