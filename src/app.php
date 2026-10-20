@@ -387,4 +387,8 @@ $produtos = array_values(array_filter($produtos, fn ($p) => $p['id'] !== (int) $
 return $response->withStatus(204);
 });
 
-$app->run();
+if (php_sapi_name() !== 'cli') {
+    $app->run();
+}
+
+return $app;
